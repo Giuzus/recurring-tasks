@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container mat-form-field {
+  width: 100%;
+}
+
+.container form {
+  margin-bottom: 20px;
+}
+
+.container form > * {
+  margin: 5px 0;
+}

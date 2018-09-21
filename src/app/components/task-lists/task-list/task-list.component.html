@@ -1,0 +1,25 @@
+<mat-toolbar class="mat-toolbar-single-row">
+  <span> {{ name }} </span>
+  <!-- This fills the remaining space of the current row -->
+  <span class="fill-remaining-space"></span>
+
+  <div>
+    <button mat-icon-button (click)="onEditMode()">
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+<mat-selection-list *ngIf="!editMode">
+  <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)" (click)="onSelect(opt,task)">
+    <h4 mat-line>{{task.description}}</h4>
+  </mat-list-option>
+</mat-selection-list>
+
+<mat-list *ngIf="editMode">
+  <mat-list-item *ngFor="let task of tasks">
+    <h4 mat-line>{{task.description}}</h4>
+    <span class="fill-remaining-space"></span>
+    <button mat-button routerLink="/edit/{{task.id}}">Edit</button>
+    <button mat-button color="warn" (click)="onRemove(task.id)">Remove</button>
+  </mat-list-item>
+</mat-list>

@@ -1,0 +1,22 @@
+<div class="container">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input formControlName="description" matInput>
+      <mat-label>
+        Description
+      </mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="type">
+        <mat-option [value]="0">Day</mat-option>
+        <mat-option [value]="1">Week</mat-option>
+      </mat-select>
+      <mat-label>
+        Repeats every
+      </mat-label>
+    </mat-form-field>
+    <div>
+      <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid">Save</button>
+    </div>
+  </form>
+</div>

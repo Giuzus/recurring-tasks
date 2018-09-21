@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "recurrent-tasks": {
+    "recurring-tasks": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/recurrent-tasks",
+            "outputPath": "dist/recurring-tasks",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "recurrent-tasks:build"
+            "browserTarget": "recurring-tasks:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "recurrent-tasks:build:production"
+              "browserTarget": "recurring-tasks:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "recurrent-tasks:build"
+            "browserTarget": "recurring-tasks:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "recurrent-tasks-e2e": {
+    "recurring-tasks-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "targets": {
@@ -103,11 +103,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "recurrent-tasks:serve"
+            "devServerTarget": "recurring-tasks:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "recurrent-tasks:serve:production"
+              "devServerTarget": "recurring-tasks:serve:production"
             }
           }
         },
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "recurrent-tasks"
+  "defaultProject": "recurring-tasks"
 }
