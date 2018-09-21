@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialImportsModule } from './modules/material-imports.module';
@@ -12,6 +12,8 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { TasksService } from './services/tasks.service';
 import { EditTaskComponent } from './components/edit-task/edit-task.component';
 import { TaskListsComponent } from './components/task-lists/task-lists.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,11 @@ import { TaskListsComponent } from './components/task-lists/task-lists.component
   ],
   imports: [
     BrowserModule,
-    // FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialImportsModule,
-    RoutesModule
+    RoutesModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [TasksService],
   bootstrap: [AppComponent]
