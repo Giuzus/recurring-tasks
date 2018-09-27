@@ -73,6 +73,20 @@ export class TasksService {
     this.saveTasks();
   }
 
+  public move(id: String, index: number): void {
+    let task = this.tasks.find(x => x.id == id);
+    let taskIndex = this.tasks.indexOf(task);
+    if (taskIndex <= index) {
+      index--;
+    }
+
+    this.tasks = this.tasks.filter(x => x.id !== task.id);
+    this.tasks.splice(index, 0, task);
+
+    this.saveTasks();
+    this.tasksUpdated.next(this.getTasks());
+  }
+
   public updateTask(task: Task): void {
     let index = this.tasks.findIndex((t: Task) => t.id == task.id);
     this.tasks[index] = task;
@@ -90,7 +104,7 @@ export class TasksService {
     this.saveTasks();
   }
 
-  public removeTask(id: string): any {
+  public removeTask(id: String): void {
     this.tasks = this.tasks.filter((task: Task) => task.id !== id);
     this.tasksUpdated.next(this.getTasks());
 

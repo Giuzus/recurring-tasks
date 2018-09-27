@@ -3,6 +3,8 @@ import { Task } from '../../../models/task';
 import { TasksService } from '../../../services/tasks.service';
 
 import { Subscription } from "rxjs";
+import { DndDropEvent, DropEffect } from 'ngx-drag-drop';
+import { listener } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-task-list',
@@ -12,6 +14,33 @@ import { Subscription } from "rxjs";
 export class TaskListComponent implements OnInit {
 
   constructor(private taskService: TasksService) { }
+
+  draggableListLeft = [
+    {
+      content: "Left",
+      effectAllowed: "move",
+      disable: false,
+      handle: false,
+    },
+    {
+      content: "Lefter",
+      effectAllowed: "move",
+      disable: false,
+      handle: false,
+    },
+    {
+      content: "Leftest",
+      effectAllowed: "copyMove",
+      disable: false,
+      handle: false
+    },
+    {
+      content: "Lefty",
+      effectAllowed: "move",
+      disable: false,
+      handle: true,
+    }
+  ];
 
   @Input()
   public tasks: Task[];
@@ -31,10 +60,10 @@ export class TaskListComponent implements OnInit {
   }
 
   onSelect(opt, task) {
-    if(opt.selected){
+    if (opt.selected) {
       this.taskService.completeTask(task.id);
     }
-    else{
+    else {
       this.taskService.incompleteTask(task.id);
     }
   }
@@ -42,5 +71,15 @@ export class TaskListComponent implements OnInit {
   onEditMode() {
     this.editMode = !this.editMode;
   }
+
+  onDrop(event: DndDropEvent) {
+    let index = event.index;
+    if (typeof index === "undefined") {
+      index = this.tasks.length;
+    }
+    this.taskService.move(event.data.id, index);
+
+  }
+
 
 }
