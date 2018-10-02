@@ -5,7 +5,8 @@
 
   <div>
     <button mat-icon-button (click)="onEditMode()">
-      <mat-icon>settings</mat-icon>
+      <mat-icon *ngIf="!editMode">edit</mat-icon>
+      <mat-icon *ngIf="editMode">check</mat-icon>
     </button>
   </div>
 </mat-toolbar>
@@ -22,8 +23,12 @@
         <mat-icon mat-list-icon class="column-drag-handle cursor-pointer">drag_handle</mat-icon>
         <h4 mat-line>{{task.description}}</h4>
         <span class="fill-remaining-space"></span>
-        <button mat-button routerLink="/edit/{{task.id}}">Edit</button>
-        <button mat-button color="warn" (click)="onRemove(task.id)">Remove</button>
+        <button mat-icon-button routerLink="/edit/{{task.id}}">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onRemove(task.id)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
       </mat-list-item>
     </smooth-dnd-draggable>
   </smooth-dnd-container>
