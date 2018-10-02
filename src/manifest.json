@@ -2,7 +2,7 @@
   "name": "Giuzus recurring-tasks",
   "short_name": "Tasks",
   "theme_color": "#ff9800",
-  "background_color": "#ff9800",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "start_url": "https://giuzus.github.io/recurring-tasks/",
