@@ -26,8 +26,8 @@
         <button mat-icon-button routerLink="/edit/{{task.id}}">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onRemove(task.id)">
-          <mat-icon>delete_forever</mat-icon>
+        <button mat-icon-button (click)="onRemove(task.id)">
+          <mat-icon>delete</mat-icon>
         </button>
       </mat-list-item>
     </smooth-dnd-draggable>

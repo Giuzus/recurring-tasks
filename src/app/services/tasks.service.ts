@@ -18,6 +18,9 @@ export class TasksService {
   private _dayResetHour: number;
   private _weekResetDay: number;
 
+  private lastDeletedTaskIndex: number;
+  private lastDeletedTask: Task;
+
   get dayResetHour() { return this._dayResetHour; }
   get weekResetDay() { return this._weekResetDay; }
 
@@ -100,11 +103,23 @@ export class TasksService {
     this.saveTasks();
   }
 
-  public removeTask(id: String): void {
-    this.tasks = this.tasks.filter((task: Task) => task.id !== id);
-    this.tasksUpdated.next(this.getTasks());
+  public deleteTask(id: String): void {
 
+    this.lastDeletedTaskIndex = this.tasks.findIndex(x => x.id == id);
+    this.lastDeletedTask = this.tasks.find(x => x.id == id);
+
+    this.tasks = this.tasks.filter((task: Task) => task.id !== id);
+
+    this.tasksUpdated.next(this.getTasks());
     this.saveTasks();
+  }
+
+  public undoDelete() {
+    if (this.lastDeletedTaskIndex && this.lastDeletedTask) {
+      this.tasks.splice(this.lastDeletedTaskIndex, 0, this.lastDeletedTask);
+      this.tasksUpdated.next(this.getTasks());
+      this.saveTasks();
+    }
   }
 
   public updateConfiguration(dayResetHour: number, weekResetDay: number) {

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Task } from '../../../models/task';
 import { TasksService } from '../../../services/tasks.service';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -10,7 +11,6 @@ import { TasksService } from '../../../services/tasks.service';
 })
 export class TaskListComponent implements OnInit {
 
-  constructor(private taskService: TasksService) { }
 
   @Input()
   public tasks: Task[];
@@ -20,13 +20,22 @@ export class TaskListComponent implements OnInit {
 
   public editMode: boolean = false;
 
+  constructor(private taskService: TasksService, public snackBar: MatSnackBar) { }
 
-  ngOnInit() { 
-    
+  ngOnInit() {
+
   }
 
   onRemove(id: string) {
-    this.taskService.removeTask(id);
+    this.taskService.deleteTask(id);
+    this.openDeletedSnackBar();
+  }
+
+  openDeletedSnackBar() {
+    let snackBarRef = this.snackBar.open("Task deleted.", "UNDO", { duration: 3000 });
+    snackBarRef.onAction().subscribe(() => {
+      this.taskService.undoDelete();
+    });
   }
 
   onSelect(opt, task) {
