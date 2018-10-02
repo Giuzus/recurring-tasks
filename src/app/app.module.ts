@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { DndModule } from 'ngx-drag-drop';
+import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 
 import { AppComponent } from './app.component';
 import { MaterialImportsModule } from './modules/material-imports.module';
@@ -16,7 +16,6 @@ import { TasksService } from './services/tasks.service';
 import { EditTaskComponent } from './components/edit-task/edit-task.component';
 import { TaskListsComponent } from './components/task-lists/task-lists.component';
 import { environment } from '../environments/environment';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +31,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     MaterialImportsModule,
     RoutesModule,
-    DndModule,
+    NgxSmoothDnDModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [TasksService],

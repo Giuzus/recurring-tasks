@@ -43,7 +43,6 @@ export class TasksService {
         return now < resetDate;
       }
       else {
-        debugger;
         let resetDate = new Date(`${task.completedAt.toDateString()} ${this.dayResetHour}:00:00`);
         if (task.completedAt.getHours() >= this.dayResetHour) {
           resetDate.setDate(resetDate.getDate() + 1);
@@ -73,19 +72,16 @@ export class TasksService {
     this.saveTasks();
   }
 
-  public move(id: String, index: number): void {
-    let task = this.tasks.find(x => x.id == id);
-    let taskIndex = this.tasks.indexOf(task);
-    if (taskIndex <= index) {
-      index--;
-    }
+  public move(removedIndex, addedIndex): void {
 
-    this.tasks = this.tasks.filter(x => x.id !== task.id);
-    this.tasks.splice(index, 0, task);
+    let itemToAdd = this.tasks.splice(removedIndex, 1)[0];
+
+    this.tasks.splice(addedIndex, 0, itemToAdd);
 
     this.saveTasks();
     this.tasksUpdated.next(this.getTasks());
-  }
+
+  };
 
   public updateTask(task: Task): void {
     let index = this.tasks.findIndex((t: Task) => t.id == task.id);

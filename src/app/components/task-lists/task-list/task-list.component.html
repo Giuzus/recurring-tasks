@@ -15,16 +15,16 @@
   </mat-list-option>
 </mat-selection-list>
 
-<mat-list *ngIf="editMode" dndDropzone (dndDrop)="onDrop($event)">
-
-  <hr dndPlaceholderRef>
-
-  <mat-list-item *ngFor="let task of tasks" [dndDraggable]="task">
-    <mat-icon mat-list-icon dndHandle>drag_handle</mat-icon>
-    <h4 mat-line>{{task.description}}</h4>
-    <span class="fill-remaining-space"></span>
-    <button mat-button routerLink="/edit/{{task.id}}">Edit</button>
-    <button mat-button color="warn" (click)="onRemove(task.id)">Remove</button>
-  </mat-list-item>
-
+<mat-list>
+  <smooth-dnd-container *ngIf="editMode" [dragHandleSelector]="'.column-drag-handle'" [lockAxis]="'y'" (drop)="onDrop($event)">
+    <smooth-dnd-draggable *ngFor="let task of tasks">
+      <mat-list-item>
+        <mat-icon mat-list-icon class="column-drag-handle cursor-pointer">drag_handle</mat-icon>
+        <h4 mat-line>{{task.description}}</h4>
+        <span class="fill-remaining-space"></span>
+        <button mat-button routerLink="/edit/{{task.id}}">Edit</button>
+        <button mat-button color="warn" (click)="onRemove(task.id)">Remove</button>
+      </mat-list-item>
+    </smooth-dnd-draggable>
+  </smooth-dnd-container>
 </mat-list>
