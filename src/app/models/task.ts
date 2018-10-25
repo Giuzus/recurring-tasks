@@ -9,9 +9,9 @@ export class Task {
     public description: String;
     public type: TaskTypeEnum;
     public completedAt: Date;
+    public category: String;
     
     constructor(init?: Partial<Task>) {
         Object.assign(this, init);
     }
-
 }

@@ -15,8 +15,23 @@
         Repeats every
       </mat-label>
     </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="category" #cat>
+        <mat-option *ngFor="let category of categories" value="{{category}}">{{ category}}</mat-option>
+        <mat-option value=''>Other</mat-option>
+      </mat-select>
+      <mat-label>
+        Category
+      </mat-label>
+    </mat-form-field>
+    <mat-form-field *ngIf="cat.value == ''" #otherCat>
+      <input formControlName="otherCategory" matInput>
+      <mat-label>
+        Other category
+      </mat-label>
+    </mat-form-field>
     <div>
-      <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid">Save</button>
+      <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid || (cat.value == null) || (cat.value == '' && taskForm.get('otherCategory').value == '')">Save</button>
     </div>
   </form>
 </div>

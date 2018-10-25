@@ -23,7 +23,10 @@ export class EditTaskComponent implements OnInit {
 
   task: Task;
 
+  categories: String[];
+
   ngOnInit() {
+    this.categories = this.tasksService.getCategories();
     this.route.params.subscribe(params => {
       var id = params['id'];
       if (id) {
@@ -32,10 +35,12 @@ export class EditTaskComponent implements OnInit {
       else {
         this.task = new Task();
       }
-      
+
       this.taskForm = this.fb.group({
         'description': [this.task.description, Validators.required],
-        'type': [this.task.type, Validators.required]
+        'type': [this.task.type, Validators.required],
+        'category': [this.task.category],
+        'otherCategory': [""]
       });
     });
   }
@@ -47,6 +52,12 @@ export class EditTaskComponent implements OnInit {
   onSubmit(): void {
     this.task.description = this.taskForm.get('description').value;
     this.task.type = this.taskForm.get('type').value as TaskTypeEnum;
+
+    let category: String = this.taskForm.get('category').value;
+
+    this.task.category = category != '' ? category : this.taskForm.get('otherCategory').value;
+
+    
 
     if (!this.task.id) {
       this.tasksService.addTask(this.task);

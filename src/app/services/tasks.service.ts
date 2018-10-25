@@ -140,7 +140,8 @@ export class TasksService {
                 id: x.id,
                 description: x.description,
                 type: x.type,
-                completedAt: x.completedAt != null ? new Date(x.completedAt) : null
+                completedAt: x.completedAt != null ? new Date(x.completedAt) : null,
+                category: x.category
             }));
         });
 
@@ -152,4 +153,18 @@ export class TasksService {
         localStorage.setItem(this.LOCAL_STORED_TASKS, tasksJson);
     }
 
+    public getCategories(): String[] {
+        
+        let ret: String[] = [];
+
+        let tasks = this.getTasks();
+
+        tasks.forEach(task => {
+            if (task.category && ret.indexOf(task.category) == -1) {
+                ret.push(task.category)
+            }
+        });
+
+        return ret;
+    }
 }

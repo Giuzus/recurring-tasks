@@ -1,23 +1,31 @@
-<mat-toolbar class="mat-toolbar-single-row">
-  <span> {{ name }} </span>
-  <!-- This fills the remaining space of the current row -->
-  <span class="fill-remaining-space"></span>
-
-  <div>
-    <button mat-icon-button (click)="onEditMode()">
-      <mat-icon *ngIf="!editMode">edit</mat-icon>
-      <mat-icon *ngIf="editMode">check</mat-icon>
-    </button>
-  </div>
-</mat-toolbar>
 <mat-selection-list *ngIf="!editMode">
+
+  <span class="subheader">
+    <h3 matSubheader>{{name}}</h3>
+    <span class="fill-remaining-space"></span>
+    <div>
+      <button mat-icon-button (click)="onEditMode()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </span>
+
   <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)" (click)="onSelect(opt,task)">
     <h4 mat-line>{{task.description}}</h4>
   </mat-list-option>
 </mat-selection-list>
 
-<mat-list>
-  <smooth-dnd-container *ngIf="editMode" [dragHandleSelector]="'.column-drag-handle'" [lockAxis]="'y'" (drop)="onDrop($event)">
+<mat-list *ngIf="editMode">
+  <span class="subheader">
+    <h3 matSubheader>{{name}}</h3>
+    <span class="fill-remaining-space"></span>
+    <div>
+      <button mat-icon-button (click)="onEditMode()">
+        <mat-icon>check</mat-icon>
+      </button>
+    </div>
+  </span>
+  <smooth-dnd-container [dragHandleSelector]="'.column-drag-handle'" [lockAxis]="'y'" (drop)="onDrop($event)">
     <smooth-dnd-draggable *ngFor="let task of tasks">
       <mat-list-item>
         <mat-icon mat-list-icon class="column-drag-handle cursor-pointer">drag_handle</mat-icon>

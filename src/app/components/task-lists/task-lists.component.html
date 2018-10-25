@@ -1,6 +1,15 @@
-<app-task-list [tasks]="dailyTasks" [name]="'Daily'"></app-task-list>
-<mat-divider></mat-divider>
-<app-task-list [tasks]="weeklyTasks" [name]="'Weekly'"></app-task-list>
+<mat-accordion >
+  <mat-expansion-panel *ngFor="let cat of categoryList">
+    <mat-expansion-panel-header>
+      {{ cat.category }}
+    </mat-expansion-panel-header>
+
+    <app-task-list [tasks]="cat.daily" [name]="'Daily'"></app-task-list>
+    <mat-divider></mat-divider>
+    <app-task-list [tasks]="cat.weekly" [name]="'Weekly'"></app-task-list>
+
+  </mat-expansion-panel>
+</mat-accordion>
 
 <button mat-fab class="fab" routerLink="/new">
   <mat-icon>add</mat-icon>
