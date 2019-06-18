@@ -34,10 +34,4 @@
       <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid || (cat.value == null) || (cat.value == '' && taskForm.get('otherCategory').value == '')">Save</button>
     </div>
   </form>
-  <p>
-    {{ !taskForm.valid  }}
-    {{ (cat.value == null) }}
-    {{ (cat.value == '' && taskForm.get('otherCategory').value == '') }}
-    {{ cat.value }}
-  </p>
 </div>
