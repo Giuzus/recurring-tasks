@@ -1,43 +1,40 @@
+<mat-divider></mat-divider>
 <mat-selection-list *ngIf="!editMode">
 
-  <span class="subheader">
-    <h3 matSubheader>{{name}}</h3>
-    <span class="fill-remaining-space"></span>
-    <div>
-      <button mat-icon-button (click)="onEditMode()">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-  </span>
+  <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)"
+    (click)="onSelect(opt,task)" [ngClass]="{'selected-highlight':taskService.isCompleted(task)}">
+    <h4 mat-line>{{task.description}} <p class="task-type-display"> {{ task.type == 1 ? "Daily" : "Weekly" }} </p>
+    </h4>
 
-  <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)" (click)="onSelect(opt,task)" [ngClass]="{'selected-highlight':taskService.isCompleted(task)}">
-    <h4 mat-line>{{task.description}}</h4>
   </mat-list-option>
 </mat-selection-list>
 
 <mat-list *ngIf="editMode">
-  <span class="subheader">
-    <h3 matSubheader>{{name}}</h3>
-    <span class="fill-remaining-space"></span>
-    <div>
-      <button mat-icon-button (click)="onEditMode()">
-        <mat-icon>check</mat-icon>
-      </button>
-    </div>
-  </span>
   <smooth-dnd-container [dragHandleSelector]="'.column-drag-handle'" [lockAxis]="'y'" (drop)="onDrop($event)">
     <smooth-dnd-draggable *ngFor="let task of tasks">
       <mat-list-item>
         <mat-icon mat-list-icon class="column-drag-handle cursor-pointer">drag_handle</mat-icon>
-        <h4 mat-line>{{task.description}}</h4>
+        <h4 mat-line>{{task.description}} </h4>
+        <p class="task-type-display"> {{ task.type == 1 ? "Daily" : "Weekly" }} </p>
         <span class="fill-remaining-space"></span>
-        <button mat-icon-button routerLink="/edit/{{task.id}}">
+        <button class="icon-button" mat-icon-button routerLink="/edit/{{task.id}}">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="onRemove(task.id)">
+        <button class="icon-button" mat-icon-button (click)="onRemove(task.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-list-item>
     </smooth-dnd-draggable>
   </smooth-dnd-container>
 </mat-list>
+<mat-divider class="bottom-divider"></mat-divider>
+
+<span class="subheader">
+  <span class="fill-remaining-space"></span>
+  <div>
+    <button mat-stroked-button (click)="onEditMode()">
+      {{ !editMode ? "Edit" : "Done" }} <mat-icon *ngIf="editMode">check</mat-icon>
+      <mat-icon *ngIf="!editMode">edit</mat-icon>
+    </button>
+  </div>
+</span>

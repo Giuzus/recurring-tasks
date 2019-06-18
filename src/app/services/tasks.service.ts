@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Task, TaskTypeEnum } from '../models/task'
 import { Guid } from '../util/guid';
 import { Subject } from 'rxjs';
+import { TaskCategory } from '../models/taskCategory';
 
 @Injectable({
     providedIn: 'root'
@@ -13,24 +14,25 @@ export class TasksService {
     private readonly WEEK_RESET_DAY = "week-reset-day";
     private readonly LOCAL_STORED_TASKS = "local-stored-tasks";
 
-    public tasksUpdated: Subject<Task[]> = new Subject<Task[]>()
+    public tasksUpdated: Subject<TaskCategory[]> = new Subject<TaskCategory[]>()
 
     private _dayResetHour: number;
     private _weekResetDay: number;
 
     private lastDeletedTaskIndex: number;
     private lastDeletedTask: Task;
+    private lastDeletedTaskCategory: String;
 
     get dayResetHour() { return this._dayResetHour; }
     get weekResetDay() { return this._weekResetDay; }
 
 
-    private tasks: Task[]
+    private taskCategories: TaskCategory[];
 
     constructor() {
         this._dayResetHour = +localStorage.getItem(this.DAY_RESET_HOUR) || 0;
         this._weekResetDay = +localStorage.getItem(this.WEEK_RESET_DAY) || 0;
-        this.tasks = this.getSavedTasks();
+        this.taskCategories = this.getSavedTasks();
     }
 
     public isCompleted(task: Task): boolean {
@@ -60,63 +62,137 @@ export class TasksService {
         return false;
     }
 
-    public getTasks(): Task[] {
-        return this.tasks.slice();
+    public getTasks(): TaskCategory[] {
+        return this.taskCategories.slice();
     }
 
-    public getTask(id: string): Task {
-        return new Task(this.tasks.find((task: Task) => task.id == id));
+    public getTask(id: string): { task: Task, categoryName: String } {
+        var ret: { task: Task, categoryName: String } = { task: null, categoryName: null };
+
+        this.taskCategories.forEach(cat => {
+            var task = cat.tasks.find((task: Task) => task.id == id);
+            if (task) {
+                ret.categoryName = cat.name;
+                ret.task = task;
+                return;
+            }
+        });
+
+        return ret;
     }
 
-    public addTask(task: Task): void {
+    public addTask(task: Task, category: String): void {
+
+        let taskCategory: TaskCategory = this.taskCategories.find((cat: TaskCategory) => cat.name == category);
+
+        if (!taskCategory) {
+            taskCategory = new TaskCategory({ name: category, tasks: [] });
+            this.taskCategories.push(taskCategory);
+        }
+
         task.id = Guid.newGuid();
-        this.tasks.push(task);
+        taskCategory.tasks.push(task);
+
+        this.sortCategories();
 
         this.saveTasks();
     }
 
-    public move(removedIndex, addedIndex): void {
+    private sortCategories() {
+        this.taskCategories = this.taskCategories.sort((a, b) => {
+            if (a.name.toLowerCase() < b.name.toLowerCase())
+                return -1;
+            else if (a.name.toLowerCase() > b.name.toLowerCase())
+                return 1;
+            else
+                return 0;
+        });
+    }
 
-        let itemToAdd = this.tasks.splice(removedIndex, 1)[0];
+    public move(category: String, taskFrom: number, taskTo: number): void {
 
-        this.tasks.splice(addedIndex, 0, itemToAdd);
+        let taskCategory: TaskCategory = this.taskCategories.find((cat: TaskCategory) => cat.name == category);
+
+        let task = taskCategory.tasks.splice(taskFrom, 1)[0];
+
+        taskCategory.tasks.splice(taskTo, 0, task);
 
         this.saveTasks();
         this.tasksUpdated.next(this.getTasks());
 
     };
 
-    public updateTask(task: Task): void {
-        let index = this.tasks.findIndex((t: Task) => t.id == task.id);
-        this.tasks[index] = task;
+    public updateTask(task: Task, category: String): void {
+
+        this.deleteTask(task.id);
+        this.addTask(task, category);
     }
 
     public completeTask(id: string): void {
-        let task = this.tasks.find((task: Task) => task.id == id);
-        task.completedAt = new Date();
-        this.saveTasks();
+        this.taskCategories.forEach(cat => {
+            let task = cat.tasks.find((task: Task) => task.id == id);
+            if (!task) {
+                return;
+            }
+
+            task.completedAt = new Date();
+            this.saveTasks();
+        });
+
     }
 
     public incompleteTask(id: string): void {
-        let task = this.tasks.find((task: Task) => task.id == id);
-        task.completedAt = null;
-        this.saveTasks();
+        this.taskCategories.forEach(cat => {
+            let task = cat.tasks.find((task: Task) => task.id == id);
+            if (!task) {
+                return;
+            }
+
+            task.completedAt = null;
+            this.saveTasks();
+        });
     }
 
     public deleteTask(id: String): void {
-        this.lastDeletedTaskIndex = this.tasks.findIndex(x => x.id == id);
-        this.lastDeletedTask = this.tasks.find(x => x.id == id);
 
-        this.tasks = this.tasks.filter((task: Task) => task.id !== id);
+        let taskCategory: TaskCategory = this.taskCategories.find((cat: TaskCategory) => cat.tasks.some(task => task.id == id));
+
+
+        this.lastDeletedTask = taskCategory.tasks.find(x => x.id == id);
+        this.lastDeletedTaskIndex = taskCategory.tasks.indexOf(this.lastDeletedTask);
+        this.lastDeletedTaskCategory = taskCategory.name;
+
+        taskCategory.tasks = taskCategory.tasks.filter((task: Task) => task.id !== id);
+
+        if (taskCategory.tasks.length == 0) {
+
+            let index = this.taskCategories.indexOf(taskCategory);
+
+            this.taskCategories.splice(index, 1);
+        }
 
         this.tasksUpdated.next(this.getTasks());
+
         this.saveTasks();
+
     }
 
     public undoDelete() {
-        if (this.lastDeletedTaskIndex != null && this.lastDeletedTask != null) {
-            this.tasks.splice(this.lastDeletedTaskIndex, 0, this.lastDeletedTask);
+        debugger;
+        if (this.lastDeletedTaskIndex != null && this.lastDeletedTask != null && this.lastDeletedTaskCategory != null) {
+            let taskCategory: TaskCategory = this.taskCategories.find((cat: TaskCategory) => cat.name == this.lastDeletedTaskCategory);
+
+            if (!taskCategory) {
+                taskCategory = new TaskCategory({ name: this.lastDeletedTaskCategory, tasks: [] });
+                this.taskCategories.push(taskCategory);
+            }
+
+            taskCategory.tasks.splice(this.lastDeletedTaskIndex, 0, this.lastDeletedTask);
+
+            this.sortCategories();
+
             this.tasksUpdated.next(this.getTasks());
+
             this.saveTasks();
         }
     }
@@ -129,23 +205,34 @@ export class TasksService {
         localStorage.setItem(this.WEEK_RESET_DAY, weekResetDay.toString());
     }
 
-    private getSavedTasks(): Task[] {
-        let tasks: Task[] = [];
+    private getSavedTasks(): TaskCategory[] {
+        let taskCategories: TaskCategory[] = [];
 
         let tasksJsonString: string = localStorage.getItem(this.LOCAL_STORED_TASKS);
         let stored = JSON.parse(tasksJsonString) || [];
 
-        stored.forEach(x => {
-            tasks.push(new Task({
-                id: x.id,
-                description: x.description,
-                type: x.type,
-                completedAt: x.completedAt != null ? new Date(x.completedAt) : null,
-                category: x.category
-            }));
+        stored.forEach(cat => {
+            let categoryTasks: Task[] = [];
+
+            //Parse tasks
+            cat.tasks.forEach(task => {
+                categoryTasks.push(new Task({
+                    id: task.id,
+                    description: task.description,
+                    type: task.type,
+                    completedAt: task.completedAt != null ? new Date(task.completedAt) : null
+                }));
+            });
+
+            let category = new TaskCategory;
+
+            category.name = cat.name;
+            category.tasks = categoryTasks;
+
+            taskCategories.push(category);
         });
 
-        return tasks;
+        return taskCategories;
     }
 
     private saveTasks(): void {
@@ -154,15 +241,11 @@ export class TasksService {
     }
 
     public getCategories(): String[] {
-        
+
         let ret: String[] = [];
 
-        let tasks = this.getTasks();
-
-        tasks.forEach(task => {
-            if (task.category && ret.indexOf(task.category) == -1) {
-                ret.push(task.category)
-            }
+        this.taskCategories.forEach(cat => {
+            ret.push(cat.name);
         });
 
         return ret;

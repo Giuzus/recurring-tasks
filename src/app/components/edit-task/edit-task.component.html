@@ -25,13 +25,13 @@
       </mat-label>
     </mat-form-field>
     <mat-form-field *ngIf="cat.value == ''" #otherCat>
-      <input formControlName="otherCategory" matInput>
+      <input formControlName="newCategory" matInput>
       <mat-label>
         Other category
       </mat-label>
     </mat-form-field>
     <div>
-      <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid || (cat.value == null) || (cat.value == '' && taskForm.get('otherCategory').value == '')">Save</button>
+      <button type="submit" mat-button color="primary" [disabled]="!taskForm.valid || (cat.value == null) || (cat.value == '' && taskForm.get('newCategory').value == '')">Save</button>
     </div>
   </form>
 </div>

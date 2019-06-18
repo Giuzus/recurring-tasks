@@ -22,6 +22,7 @@ export class EditTaskComponent implements OnInit {
   public taskForm: FormGroup;
 
   task: Task;
+  category: String;
 
   categories: String[];
 
@@ -30,7 +31,9 @@ export class EditTaskComponent implements OnInit {
     this.route.params.subscribe(params => {
       var id = params['id'];
       if (id) {
-        this.task = this.tasksService.getTask(id);
+        let resp = this.tasksService.getTask(id);
+        this.task = resp.task;
+        this.category = resp.categoryName;
       }
       else {
         this.task = new Task();
@@ -39,8 +42,8 @@ export class EditTaskComponent implements OnInit {
       this.taskForm = this.fb.group({
         'description': [this.task.description, Validators.required],
         'type': [this.task.type, Validators.required],
-        'category': [this.task.category],
-        'otherCategory': [""]
+        'category': [this.category],
+        'newCategory': [""]
       });
     });
   }
@@ -53,17 +56,13 @@ export class EditTaskComponent implements OnInit {
     this.task.description = this.taskForm.get('description').value;
     this.task.type = this.taskForm.get('type').value as TaskTypeEnum;
 
-    let category: String = this.taskForm.get('category').value;
-
-    this.task.category = category != '' ? category : this.taskForm.get('otherCategory').value;
-
-    
+    let category: String = this.taskForm.get('category').value || this.taskForm.get('newCategory').value;
 
     if (!this.task.id) {
-      this.tasksService.addTask(this.task);
+      this.tasksService.addTask(this.task, category);
     }
     else {
-      this.tasksService.updateTask(this.task);
+      this.tasksService.updateTask(this.task, category);
     }
 
 

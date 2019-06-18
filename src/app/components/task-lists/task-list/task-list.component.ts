@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Task } from '../../../models/task';
 import { TasksService } from '../../../services/tasks.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { createNgModule } from '@angular/compiler/src/core';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class TaskListComponent implements OnInit {
   public tasks: Task[];
 
   @Input()
-  public name: string;
+  public category: String;
 
   public editMode: boolean = false;
 
@@ -52,6 +53,6 @@ export class TaskListComponent implements OnInit {
   }
 
   onDrop(dropResult) {
-    this.taskService.move(dropResult.removedIndex, dropResult.addedIndex);
+    this.taskService.move(this.category, dropResult.removedIndex, dropResult.addedIndex);
   }
 }

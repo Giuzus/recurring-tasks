@@ -1,8 +1,7 @@
 
 
 .fill-remaining-space {
-    /*This fills the remaining space, by using flexbox.  
-   Every toolbar row uses a flexbox row layout. */
+    /*This fills the remaining space, by using flexbox.*/
    flex: 1 1 auto;
 }
 
@@ -11,6 +10,7 @@
 }
 
 .subheader {
+    margin-top: 20px;
     display: flex;
 }
 
@@ -20,4 +20,22 @@ mat-list-option {
 
 .selected-highlight {
     background-color: #fff8ed;
+}
+
+smooth-dnd-draggable {
+    height: 48px;
+}
+
+.icon-button{
+    margin-top: -10px;
+}
+
+.bottom-divider{
+    margin-top: 8px;
+}
+
+.task-type-display{
+    display: inline;
+    font-size: x-small;
+    color: gray;
 }

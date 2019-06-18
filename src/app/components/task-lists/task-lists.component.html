@@ -1,13 +1,9 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let cat of categoryList">
+  <mat-expansion-panel *ngFor="let cat of taskCategories">
     <mat-expansion-panel-header>
-      {{ cat.category }}
+      {{ cat.name }}
     </mat-expansion-panel-header>
-
-    <app-task-list [tasks]="cat.daily" [name]="'Daily'"></app-task-list>
-    <mat-divider></mat-divider>
-    <app-task-list [tasks]="cat.weekly" [name]="'Weekly'"></app-task-list>
-
+    <app-task-list [tasks]="cat.tasks" [category]="cat.name"></app-task-list>
   </mat-expansion-panel>
 </mat-accordion>
 
