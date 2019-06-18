@@ -13,3 +13,11 @@
 .subheader {
     display: flex;
 }
+
+mat-list-option {
+    transition: background-color 1s ease;
+}
+
+.selected-highlight {
+    background-color: #fff8ed;
+}

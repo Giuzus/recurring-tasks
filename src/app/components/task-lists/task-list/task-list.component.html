@@ -10,7 +10,7 @@
     </div>
   </span>
 
-  <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)" (click)="onSelect(opt,task)">
+  <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)" (click)="onSelect(opt,task)" [ngClass]="{'selected-highlight':taskService.isCompleted(task)}">
     <h4 mat-line>{{task.description}}</h4>
   </mat-list-option>
 </mat-selection-list>
