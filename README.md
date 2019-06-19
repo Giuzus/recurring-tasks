@@ -1,3 +1,3 @@
 # Recurring Tasks
 
-Simple task PWA application for daily and weekly taks.
+Simple task PWA application for daily and weekly tasks.
