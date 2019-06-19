@@ -3,7 +3,7 @@
 
   <mat-list-option *ngFor="let task of tasks" #opt [selected]="taskService.isCompleted(task)"
     (click)="onSelect(opt,task)" [ngClass]="{'selected-highlight':taskService.isCompleted(task)}">
-    <h4 mat-line>{{task.description}} <p class="task-type-display"> {{ task.type == 1 ? "Daily" : "Weekly" }} </p>
+    <h4 mat-line>{{task.description}} <p class="task-type-display"> {{ task.type == 0 ? "Daily" : "Weekly" }} </p>
     </h4>
 
   </mat-list-option>
@@ -14,8 +14,8 @@
     <smooth-dnd-draggable *ngFor="let task of tasks">
       <mat-list-item>
         <mat-icon mat-list-icon class="column-drag-handle cursor-pointer">drag_handle</mat-icon>
-        <h4 mat-line>{{task.description}} </h4>
-        <p class="task-type-display"> {{ task.type == 1 ? "Daily" : "Weekly" }} </p>
+        <h4 mat-line>{{task.description}} <p class="task-type-display"> {{ task.type == 0 ? "Daily" : "Weekly" }} </p>
+        </h4>
         <span class="fill-remaining-space"></span>
         <button class="icon-button" mat-icon-button routerLink="/edit/{{task.id}}">
           <mat-icon>edit</mat-icon>

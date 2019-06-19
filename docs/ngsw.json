@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1560890657985,
+  "timestamp": 1560947233826,
   "index": "https://giuzus.github.io/recurring-tasks/index.html",
   "assetGroups": [
     {
@@ -10,7 +10,7 @@
       "urls": [
         "https://giuzus.github.io/recurring-tasks/favicon.ico",
         "https://giuzus.github.io/recurring-tasks/index.html",
-        "https://giuzus.github.io/recurring-tasks/main.7b2444ecc6e71e190cff.js",
+        "https://giuzus.github.io/recurring-tasks/main.dfb4f2c17be134821c4e.js",
         "https://giuzus.github.io/recurring-tasks/polyfills-es5.613d1909ec381c0aefb7.js",
         "https://giuzus.github.io/recurring-tasks/polyfills.206fe91a766379fe06c3.js",
         "https://giuzus.github.io/recurring-tasks/runtime.741402d1d47331ce975c.js",
@@ -49,8 +49,8 @@
     "https://giuzus.github.io/recurring-tasks/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "https://giuzus.github.io/recurring-tasks/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "https://giuzus.github.io/recurring-tasks/favicon.ico": "5e2f81a96f00a2714d6879d89f012345073aadb0",
-    "https://giuzus.github.io/recurring-tasks/index.html": "91aff87a7ebd3c214d2196262240b65d4f7201a4",
-    "https://giuzus.github.io/recurring-tasks/main.7b2444ecc6e71e190cff.js": "c6caa2be1731c885724325ff97397fb919c9ed04",
+    "https://giuzus.github.io/recurring-tasks/index.html": "5d90c9cb211139cb13a43f070e5f88da6fd83e4b",
+    "https://giuzus.github.io/recurring-tasks/main.dfb4f2c17be134821c4e.js": "89fc0e3975bbad5d6477d648bb2e02e10876ca26",
     "https://giuzus.github.io/recurring-tasks/polyfills-es5.613d1909ec381c0aefb7.js": "e3aac0d6ebd3f9f1286da2a0bbb8631c4642986c",
     "https://giuzus.github.io/recurring-tasks/polyfills.206fe91a766379fe06c3.js": "623c67fa1833bdebb0199bdd89e26f95f73e50aa",
     "https://giuzus.github.io/recurring-tasks/runtime.741402d1d47331ce975c.js": "b62956c2192bfe5516d6374e753773901ed50ec5",
